@@ -9,9 +9,13 @@ import re
 from selenium.common.exceptions import *
 
 
-emailaddress =  '2650edu-b@dst.gr' # 'k.lymperakis@gmail.com' / '2650edu-b@dst.gr'
-password = 'kostis!311' # 'kostisMs!311' / 'kostis!311'
+emailaddress =  "" # put your email here
+password = "" # put your password here
 
+if not emailaddress:
+        emailaddress = input('please enter your e-mail address: ')
+if not password:
+        password = input('Please enter your password: ')
 
 options = Options()
 options.add_experimental_option("prefs", { \
