@@ -124,8 +124,8 @@ def join_active_meeting():
 	#--------- JOIN -----------#
 
 	try:
-		join_button = WebDriverWait(driver, 10).until( # '/html/body/div[8]/div/div/div/div[3]/div/div/div[1]/div[2]/div[3]/button[1]'
-		        EC.presence_of_element_located((By.XPATH, '//*[@id="AAMkADA2ZjczNjZhLWY3ZDItNGIxOS1hNDlhLTgwYzg4ODRkNDhkNwFRAAgI2JpDCljAAEYAAAAAHFaEdm3OaUm8CTp_8I5CngcAW5bPsR-74UCJ-NVJRztGkwAAAAABDQAAW5bPsR-74UCJ-NVJRztGkwAAmZHbOgAAEA=="]/div[2]/button'))
+		join_button = WebDriverWait(driver, 10).until( # '/html/body/div[8]/div/div/div/div[3]/div/div/div[1]/div[2]/div[3]/button[1]' '//*[@id="AAMkADA2ZjczNjZhLWY3ZDItNGIxOS1hNDlhLTgwYzg4ODRkNDhkNwFRAAgI2JpDCljAAEYAAAAAHFaEdm3OaUm8CTp_8I5CngcAW5bPsR-74UCJ-NVJRztGkwAAAAABDQAAW5bPsR-74UCJ-NVJRztGkwAAmZHbOgAAEA=="]/div[2]/button'
+		        EC.presence_of_element_located((By.XPATH, '/html/body/div[9]/div/div/div/div[3]/div/div/div[1]/div[2]/div[3]/button[1]'))
 		    )
 		print(join_button)
 	except Exception as e:
@@ -170,11 +170,11 @@ def join_scheduled_metting():
 		name = re.findall(r'title="(.+)"')
 		print(name[0])
 
-def show_particians():
+def show_participants():
 	global driver
 
-	particians_button = WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, 'roster-button')))
-	particians_button.click()
+	participants_button = WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, 'roster-button')))
+	participants_button.click()
 
 	time.sleep(5)
 
@@ -182,30 +182,28 @@ def show_particians():
 	'//*[@id="participant-8orgid83cef4adfc9640ee8953161429ab1648"]'
 
 	try:
-		particians = driver.find_element_by_xpath('//*[@id="page-content-wrapper"]/div[1]/div/calling-screen/div/div[2]/meeting-panel-components/calling-roster/div/div[2]/div/div[1]/accordion/div/accordion-section[2]/div/calling-roster-section/div/div[2]/div/ul')
+		participants = driver.find_element_by_xpath('//*[@id="page-content-wrapper"]/div[1]/div/calling-screen/div/div[2]/meeting-panel-components/calling-roster/div/div[2]/div/div[1]/accordion/div/accordion-section[2]/div/calling-roster-section/div/div[2]/div/ul')
 	except:
-		while particians == None:
-			particians = driver.find_element_by_xpath('//*[@id="page-content-wrapper"]/div[1]/div/calling-screen/div/div[2]/meeting-panel-components/calling-roster/div/div[3]/div/div[1]/accordion/div/accordion-section[2]/div/calling-roster-section/div/div[2]/div/ul')
+		while participants == None:
+			participants = driver.find_element_by_xpath('//*[@id="page-content-wrapper"]/div[1]/div/calling-screen/div/div[2]/meeting-panel-components/calling-roster/div/div[3]/div/div[1]/accordion/div/accordion-section[2]/div/calling-roster-section/div/div[2]/div/ul')
 			time.sleep(.5)
 	
-	html = particians.get_attribute('innerHTML')
-	with open('particians.html', 'w', encoding='utf-8') as file:
-		file.write(html)	
+	html = participants.get_attribute('innerHTML')
 
 	
-	most_particians = 0
-	number_of_particians = 0
+	most_participants = 0
+	number_of_participants = 0
 
 	in_call = True
 
 	
 	while in_call:
-		html = particians.get_attribute('innerHTML')
-		number_of_particians = len(re.findall(r'</span><!----></skype-status><!----></div></ng-transclude>(.+)', html))
-		if number_of_particians > most_particians:
-			print(f'there are {number_of_particians} number of people in the call, the most people in the meeting at once were {most_particians}')
-			most_particians = number_of_particians
-		elif number_of_particians < most_particians * 0.3:
+		html = participants.get_attribute('innerHTML')
+		number_of_participants = len(re.findall(r'</span><!----></skype-status><!----></div></ng-transclude>(.+)', html))
+		if number_of_participants > most_participants:
+			print(f'there are {number_of_participants} number of people in the call, the most people in the meeting at once were {most_participants}')
+			most_participants = number_of_participants
+		elif number_of_participants < most_participants * 0.3:
 			hangup_button = driver.find_element_by_id('hangup-button')
 			driver.execute_script('arguments[0].click();', hangup_button)
 			print('hanging up...')
@@ -219,4 +217,4 @@ proceed = False
 
 go_to_teams(emailaddress, password)
 join_active_meeting()
-show_particians()
+show_participants()
